@@ -69,9 +69,8 @@ const PullRequestCard = ({ pr }: { pr: PullRequest }) => {
             className={cn(
               // "px-2 py-1 text-xs rounded-md font-bold h-auto w-auto min-w-[70px] text-center whitespace-nowrap",
               "px-3 py-2 text-xs rounded-md font-bold h-auto w-auto",
-
-              pr.status === "Closed" && "bg-red-600 text-white",
-              pr.status === "Merged" && "bg-purple-600 text-white"
+              pr.status === "Closed" ? "bg-red-600 text-white" : "",
+              pr.status === "Merged" ? "bg-purple-600 text-white" : ""
             )}
           >
             {pr.status}
