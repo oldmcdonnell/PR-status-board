@@ -1,8 +1,6 @@
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
-// import PullRequestCard, { PullRequest } from "../components/PullRequestCard";
-// import { Octokit } from "octokit";
 import Filter from "../components/filter";
 
 const cn = (...classes: string[]) => classes.filter(Boolean).join(" ");
@@ -285,20 +283,24 @@ export default function ClosedRequests() {
         onClearCache={clearCache}
       />
 
-      <div className="px-4 md:px-10 mt-10 max-w-6xl mx-auto">
+      <div className="px-10 mt-10">
         <div className="flex flex-col lg:flex-row items-start lg:items-center mb-8 space-y-4 lg:space-y-0 justify-between max-w-[1216px] m-auto">
-          <h1 className="text-3xl font-bold mb-6 mt-5">Closed Pull Requests</h1>
+          <h1 className="text-3xl font-bold mt-5">Closed Pull Requests</h1>
         </div>
 
-        <div className="text-gray-400 text-sm mb-6 space-y-1">
+        <div className="flex flex-col lg:flex-row items-start lg:items-center space-y-4 lg:space-y-0 justify-between max-w-[1216px] m-auto">
+
+        <div className="text-gray-400 text-sm  mb-6 space-y-1">
           {lastFetched && <p>Last fetched (Get Live Data): {lastFetched}</p>}
           {lastUsedCache && (
             <p>Last used cache (Use Cached Data): {lastUsedCache}</p>
           )}
           {lastCleared && <p>Cache cleared on: {lastCleared}</p>}
         </div>
+</div>
+        <div className="flex flex-col lg:flex-row items-start lg:items-center space-y-4 lg:space-y-0 justify-between max-w-[1216px] m-auto">
 
-        <div className="flex flex-row flex-wrap gap-3 mb-8">
+        <div className="flex flex-row flex-wrap gap-3 mb-8 ">
           <input
             type="text"
             placeholder="Search Closed PRs..."
@@ -340,6 +342,8 @@ export default function ClosedRequests() {
             <option className="bg-[#161b22]">Title</option>
           </select>
         </div>
+</div>
+
 
         {loading ? (
           <p>Loading...</p>
