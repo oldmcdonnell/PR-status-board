@@ -253,70 +253,63 @@ export default function OpenPRsPage() {
       />
 
       <div className="px-10 mt-10">
-        {/* <p className="text-xl animate-pulse">
-        <span className="text-white mr-2">
-            <svg className="animate-spin inline -ml-1 mr-3 h-5 w-5 text-current" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-            </svg>
-        </span>
-        Fetching open pull requests...
-      </p> */}
         <div className="flex flex-col lg:flex-row items-start lg:items-center mb-8 space-y-4 lg:space-y-0 justify-between max-w-[1216px] m-auto">
-          <h1 className="text-3xl font-bold mb-6 mt-5">Open Pull Requests</h1>
+          <h1 className="text-3xl font-bold mt-5">Open Pull Requests</h1>
         </div>
 
-        <div className="text-gray-400 text-sm mb-6 space-y-1">
-          {lastFetched && <p>Last fetched (Get Live Data): {lastFetched}</p>}
-          {lastUsedCache && (
-            <p>Last used cache (Use Cached Data): {lastUsedCache}</p>
-          )}
-          {lastCleared && <p>Cache cleared on: {lastCleared}</p>}
+        <div className="flex flex-col lg:flex-row items-start lg:items-center space-y-4 lg:space-y-0 justify-between max-w-[1216px] m-auto">
+          <div className="text-gray-400 text-sm mb-6 space-y-1">
+            {lastFetched && <p>Last fetched (Get Live Data): {lastFetched}</p>}
+            {lastUsedCache && (
+              <p>Last used cache (Use Cached Data): {lastUsedCache}</p>
+            )}
+            {lastCleared && <p>Cache cleared on: {lastCleared}</p>}
+          </div>
         </div>
+        <div className="flex flex-col lg:flex-row items-start lg:items-center space-y-4 lg:space-y-0 justify-between max-w-[1216px] m-auto">
+          <div className="flex flex-row flex-wrap gap-3 mb-8">
+            <input
+              type="text"
+              placeholder="Search Open PRs..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-[200px] sm:w-[220px] bg-[#161b22] border border-[#30363D] rounded-lg pl-4 pr-4 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
 
-        <div className="flex flex-row flex-wrap gap-3 mb-8">
-          <input
-            type="text"
-            placeholder="Search Open PRs..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-[200px] sm:w-[220px] bg-[#161b22] border border-[#30363D] rounded-lg pl-4 pr-4 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
+            <select
+              value={authorFilter}
+              onChange={(e) => setAuthorFilter(e.target.value)}
+              className="font-bold w-[120px] sm:w-[140px] text-sm h-[38px] bg-[#161b22] border border-[#30363D] rounded-lg"
+            >
+              <option>All Authors</option>
+              {[...new Set(prs.map((pr) => pr.author))].map((author, index) => (
+                <option key={`${author}-${index}`}>{author}</option>
+              ))}
+            </select>
 
-          <select
-            value={authorFilter}
-            onChange={(e) => setAuthorFilter(e.target.value)}
-            className="font-bold w-[120px] sm:w-[140px] text-sm h-[38px] bg-[#161b22] border border-[#30363D] rounded-lg"
-          >
-            <option>All Authors</option>
-            {[...new Set(prs.map((pr) => pr.author))].map((author, index) => (
-              <option key={`${author}-${index}`}>{author}</option>
-            ))}
-          </select>
+            <select
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+              className="font-bold w-[140px] sm:w-[160px] text-sm h-[38px] bg-[#161b22] border border-[#30363D] rounded-lg"
+            >
+              <option>All Status</option>
+              <option>Unapproved</option>
+              <option>Pending approvals</option>
+              <option>Requested changes</option>
+              <option>Approved</option>
+            </select>
 
-          <select
-            value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
-            className="font-bold w-[140px] sm:w-[160px] text-sm h-[38px] bg-[#161b22] border border-[#30363D] rounded-lg"
-          >
-            <option>All Status</option>
-            <option>Unapproved</option>
-            <option>Pending approvals</option>
-            <option>Requested changes</option>
-            <option>Approved</option>
-          </select>
-
-          <select
-            value={sortBy}
-            onChange={(e) => setSortBy(e.target.value)}
-            className="font-bold w-[140px] sm:w-[160px] text-sm h-[38px] bg-[#161b22] border border-[#30363D] rounded-lg"
-          >
-            <option>Sort By Created</option>
-            <option>Updated</option>
-            <option>Title</option>
-          </select>
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value)}
+              className="font-bold w-[140px] sm:w-[160px] text-sm h-[38px] bg-[#161b22] border border-[#30363D] rounded-lg"
+            >
+              <option>Sort By Created</option>
+              <option>Updated</option>
+              <option>Title</option>
+            </select>
+          </div>
         </div>
-
         {loading ? (
           <p>Loading...</p>
         ) : (

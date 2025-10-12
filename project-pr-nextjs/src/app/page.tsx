@@ -15,7 +15,7 @@ export default function Home() {
   return (
     <div>
       <div
-        className="relative justify-center mx-auto overflow-hidden rounded-2xl mt-8 bg-gradient-to-br 
+        className="relative justify-center bg-[#161B22] mx-auto overflow-hidden rounded-2xl mt-8 bg-gradient-to-br 
         from-[#147E7E] via-[#2D5D9F] to-[#7A2E2E] w-full max-w-screen-xl h-auto px-4 py-10 sm:px-6 lg:px-12"
       >
         <div className="absolute inset-0 bg-opacity-20"></div>
@@ -29,16 +29,16 @@ export default function Home() {
           </p>
 
           <div className="max-w-md mx-auto mb-8">
-            <div className="relative">
+            {/* <div className="relative">
               <button
                 onClick={() => toggleDropdown()}
                 className="w-full font-bold text-lg bg-white/10 cursor-pointer backdrop-blur-sm border border-white border-opacity-20 rounded-xl px-6 py-4 
                             text-left flex items-center justify-between hover:bg-white/20 transition-all duration-300"
               >
-                <span id="heroSelectedRepo" className="text-blue-100">
+                {/* <span id="heroSelectedRepo" className="text-blue-100">
                   Select a repository to get started
-                </span>
-                <svg
+                </span> */}
+                {/* <svg
                   className="w-5 h-5 text-blue-200"
                   fill="currentColor"
                   viewBox="0 0 20 20"
@@ -46,7 +46,7 @@ export default function Home() {
                   <path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"></path>
                 </svg>
               </button>
-            </div>
+            </div> */} 
           </div>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-6">
