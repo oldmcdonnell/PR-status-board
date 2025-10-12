@@ -24,13 +24,6 @@ export default function Filter({
     <div>
       <div className="flex flex-row items-center justify-end bg-gray-900 border-b border-b-[#30363D] h-auto w-full py-3 px-4 space-x-3 sm:space-x-4">
         <div className="flex flex-row items-center justify-end flex-wrap space-x-3 sm:space-x-4">
-          <div
-            id="sourceBadge"
-            className="w-[110px] ml-8 mx-8 text-xs text-gray-400 bg-slate-950 px-2 py-1 rounded border border-[#30363D] text-center sm:text-left"
-          >
-            Source: No data
-          </div>
-
           <div className="relative">
             <button
               onClick={toggleCachingDropdown}

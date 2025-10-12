@@ -1,65 +1,85 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import Link from "next/link";
 import Profile from "./Profile";
+import { usePathname } from "next/navigation";
 
 export default function Navbar() {
-    const [activeButton, setActiveButton] = useState<string>("home");
+  const pathname = usePathname();
 
-    return (
-        <div className="flex flex-wrap items-center bg-[#161B22] border border-[#30363D] h-auto p-4">
-            
-            <div className="inline-flex items-center">
-            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-teal-500 to-blue-600 rounded-xl flex items-center justify-center shadow-lg m-4">
+  return (
+    <div className="flex flex-col bg-[#161B22] border border-[#30363D] p-2 sm:p-3 w-full">
+      <div className="flex flex-wrap items-center justify-between w-full mb-2 sm:mb-1">
+        <div className="inline-flex items-center">
+          <div className="w-10 h-10 sm:w-11 sm:h-11 bg-gradient-to-br from-teal-500 to-blue-600 rounded-xl flex items-center justify-center shadow-lg m-1 sm:m-2">
             <Link href="/" passHref>
-                <span onClick={() => setActiveButton("home")} className="text-white font-bold text-lg sm:text-xl">PRB</span>
+              <span className="text-white font-bold text-lg sm:text-xl">
+                PRB
+              </span>
             </Link>
-            </div>
-            
-            <h1 className="text-sm sm:text-2xl font-bold m-4 text-white">PR Status Board</h1>
+          </div>
+          <h1 className="text-sm sm:text-2xl font-bold ml-2 sm:ml-3 text-white">
+            PR Status Board
+          </h1>
         </div>
 
+        <div className="flex flex-col items-end text-right mr-2 sm:mr-4 mt-2 sm:mt-0">
+          <p className="text-gray-400 text-xs sm:text-sm mb-1">
+            {new Date().toLocaleDateString("en-US", {
+              weekday: "short",
+              month: "short",
+              day: "numeric",
+              year: "numeric",
+            })}
+          </p>
+          <Profile />
+        </div>
+      </div>
 
-<div className="flex flex-wrap ">
+      <div className="flex flex-wrap justify-center sm:justify-center md:justify-center lg:justify-center xl:justify-center">
         <Link href="/" passHref>
-            <button
-                className={`flex justify-center items-center rounded-md duration-200 
-                ease-in-out hover:-translate-y-1 bg-[#161B22] cursor-pointer m-2 md:m-4 w-[70px] h-[65px] md:h-[40px] md:w-[98px] ${
-                    activeButton === "home" ? "text-[#58A6FF] bg-zinc-950" : "text-white bg-[#161B22] text-xs sm:text-sm"
-                }`}
-                onClick={() => setActiveButton("home")}
-            >
-                🏠 Home
-            </button>
-        </Link>        
+          <button
+            className={`flex justify-center items-center rounded-lg font-semibold text-sm sm:text-lg tracking-wide duration-200 ease-in-out hover:-translate-y-1 
+            bg-gradient-to-b from-[#1E232B] to-[#101418] border border-[#30363D] hover:bg-[#2B3139] shadow-md cursor-pointer 
+            m-2 md:m-4 w-[80px] h-[38px] sm:h-[40px] sm:w-[100px] ${
+              pathname === "/"
+                ? "text-[#58A6FF] bg-zinc-950"
+                : "text-white bg-[#161B22]"
+            }`}
+          >
+            Home
+          </button>
+        </Link>
 
         <Link href="/openRequests" passHref>
-            <button
-                className={`flex justify-center items-center rounded-md duration-200 
-                ease-in-out hover:-translate-y-1 bg-[#161B22] cursor-pointer m-2 md:m-4 w-[70px] h-[65px] md:h-[40px] md:w-[98px] ${
-                    activeButton === "open-prs" ? "text-[#58A6FF] bg-zinc-950" : "text-white bg-[#161B22] text-xs sm:text-sm"
-                }`}
-                onClick={() => setActiveButton("open-prs")}
-            >
-                🔓 Open PR's
-            </button>
+          <button
+            className={`flex justify-center items-center rounded-lg font-semibold text-sm sm:text-lg tracking-wide duration-200 ease-in-out hover:-translate-y-1 
+            bg-gradient-to-b from-[#1E232B] to-[#101418] border border-[#30363D] hover:bg-[#2B3139] shadow-md cursor-pointer 
+            m-2 md:m-4 w-[100px] h-[38px] sm:h-[40px] sm:w-[120px] ${
+              pathname === "/openRequests"
+                ? "text-[#58A6FF] bg-zinc-950"
+                : "text-white"
+            }`}
+          >
+            Open PR's
+          </button>
         </Link>
 
         <Link href="/closedRequests" passHref>
-            <button
-                className={`flex justify-center items-center rounded-md duration-200 
-                ease-in-out hover:-translate-y-1 bg-[#161B22] cursor-pointer m-2 md:m-4 w-[75px] h-[70px] md:h-[40px] md:w-[127px] ${
-                    activeButton === "closed-prs" ? "text-[#58A6FF] bg-zinc-950" : "text-white bg-[#161B22] text-xs sm:text-sm"
-                }`}
-                onClick={() => setActiveButton("closed-prs")}
-            >
-                ✅ Closed PR's
-            </button>
+          <button
+            className={`flex justify-center items-center rounded-lg font-semibold text-sm sm:text-lg tracking-wide duration-200 ease-in-out hover:-translate-y-1 
+            bg-gradient-to-b from-[#1E232B] to-[#101418] border border-[#30363D] hover:bg-[#2B3139] shadow-md cursor-pointer 
+            m-2 md:m-4 w-[110px] h-[38px] sm:h-[40px] sm:w-[130px] ${
+              pathname === "/closedRequests"
+                ? "text-[#58A6FF] bg-[#103963]"
+                : "text-white bg-[#161B22]"
+            }`}
+          >
+            Closed PR's
+          </button>
         </Link>
-        </div>
-            
-            <Profile/>
-        </div>
-    );
+      </div>
+    </div>
+  );
 }

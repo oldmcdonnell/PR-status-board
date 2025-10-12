@@ -30,16 +30,32 @@ export default function OpenPRsPage() {
 
       const formatted = json.data.map((pr: any) => {
         const reviews = pr.reviews || [];
-        const latestReview = [...reviews].sort(
+
+        let lastAction = "Created";
+        let lastActionTime = pr.created_at;
+
+        const latestReview = [...(pr.reviews || [])].sort(
           (a, b) =>
             new Date(b.submitted_at).getTime() -
             new Date(a.submitted_at).getTime()
         )[0];
 
-        let lastAction = "Created";
-        let lastActionTime = pr.created_at;
+        const latestComment = [...(pr.comments || [])].sort(
+          (a, b) =>
+            new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+        )[0];
 
-        if (latestReview) {
+        const latestReviewTime = latestReview
+          ? new Date(latestReview.submitted_at).getTime()
+          : 0;
+        const latestCommentTime = latestComment
+          ? new Date(latestComment.created_at).getTime()
+          : 0;
+
+        if (latestCommentTime > latestReviewTime) {
+          lastAction = "Commented";
+          lastActionTime = latestComment.created_at;
+        } else if (latestReview) {
           if (latestReview.state === "APPROVED") lastAction = "Approved";
           else if (latestReview.state === "CHANGES_REQUESTED")
             lastAction = "Requested changes";
@@ -50,9 +66,21 @@ export default function OpenPRsPage() {
           lastActionTime = pr.updated_at;
         }
 
-        const hoursSince = Math.floor(
-          (Date.now() - new Date(lastActionTime).getTime()) / (1000 * 60 * 60)
-        ).toString();
+        const diffMs = Date.now() - new Date(lastActionTime).getTime();
+        const diffHours = diffMs / (1000 * 60 * 60);
+        const days = Math.floor(diffHours / 24);
+        const hours = Math.floor(diffHours % 24);
+
+        let timeDisplay = "";
+        if (days > 0) {
+          timeDisplay = `${days} day${days > 1 ? "s" : ""}${
+            hours > 0 ? ` ${hours} hour${hours > 1 ? "s" : ""}` : ""
+          } ago`;
+        } else if (diffHours >= 1) {
+          timeDisplay = `${Math.floor(diffHours)}h ago`;
+        } else {
+          timeDisplay = `0h ago`;
+        }
 
         const latestReviewsByUser: Record<string, any> = {};
         [...(pr.reviews || [])]
@@ -117,10 +145,10 @@ export default function OpenPRsPage() {
           url: pr.html_url,
           reviewersGrouped,
           lastAction,
-          lastActionAt: hoursSince,
+          lastActionAt: timeDisplay,
           status,
           closedOn: "",
-          age: hoursSince,
+          age: timeDisplay,
         };
       });
 
@@ -225,7 +253,7 @@ export default function OpenPRsPage() {
       />
 
       <div className="px-10 mt-10">
-      {/* <p className="text-xl animate-pulse">
+        {/* <p className="text-xl animate-pulse">
         <span className="text-white mr-2">
             <svg className="animate-spin inline -ml-1 mr-3 h-5 w-5 text-current" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>

@@ -15,7 +15,13 @@ export interface PullRequest {
   updatedAt: string;
   closedOn: string;
   age: string;
-  status: "Unapproved" | "Pending approvals" | "Requested changes" | "Approved" | "Closed" | "Merged";
+  status:
+    | "Unapproved"
+    | "Pending approvals"
+    | "Requested changes"
+    | "Approved"
+    | "Closed"
+    | "Merged";
   url: string;
   lastAction: string;
   lastActionAt: string;
@@ -67,30 +73,30 @@ export default function PullRequestCard({ pr }: { pr: PullRequest }) {
 
         <p className="text-sm text-gray-400">
           by <span className="font-medium text-white">{pr.author}</span> •
-          created {pr.createdAt} • updated {pr.updatedAt} • ** {" "}
+          created {pr.createdAt} • updated {pr.updatedAt} • **{" "}
           <span
             className={cn(
               pr.lastAction === "Approved" && "text-green-600",
               pr.lastAction === "Requested changes" && "text-red-600",
-              pr.lastAction === "Commented" && "text-yellow-600",
-              (pr.lastAction === "Unapproved" || pr.lastAction === "Updated") && "text-orange-600",
+              pr.lastAction === "Commented" && "text-blue-600",
+              (pr.lastAction === "Unapproved" || pr.lastAction === "Updated") &&
+                "text-orange-600",
               !pr.lastAction && "text-orange-600"
             )}
           >
-            last action: {" "}
-            {pr.lastAction}
+            last action: {pr.lastAction}
           </span>{" "}
-          {" "}
           <span
             className={cn(
               pr.lastAction === "Approved" && "text-green-600",
               pr.lastAction === "Requested changes" && "text-red-600",
-              pr.lastAction === "Commented" && "text-yellow-600",
-              (pr.lastAction === "Unapproved" || pr.lastAction === "Updated") && "text-orange-600",
+              pr.lastAction === "Commented" && "text-blue-600",
+              (pr.lastAction === "Unapproved" || pr.lastAction === "Updated") &&
+                "text-orange-600",
               !pr.lastAction && "text-orange-600"
             )}
           >
-            {pr.lastActionAt}h ago{" "}
+            {pr.lastActionAt}{" "}
           </span>
           **
         </p>
