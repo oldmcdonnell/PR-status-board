@@ -52,13 +52,24 @@ export async function GET(request: Request) {
             }
           );
 
+          const { data: comments } = await octokit.request(
+            "GET /repos/{owner}/{repo}/issues/{issue_number}/comments",
+            {
+              owner,
+              repo,
+              issue_number: pr.number,
+              headers: { "X-GitHub-Api-Version": "2022-11-28" },
+            }
+          );
+
           return {
             ...pr,
             reviews,
+            comments,
           };
         } catch (err) {
-          console.error(`Error fetching reviews for PR #${pr.number}:`, err);
-          return { ...pr, reviews: [] };
+          console.error(`Error fetching data for PR #${pr.number}:`, err);
+          return { ...pr, reviews: [], comments: [] };
         }
       })
     );

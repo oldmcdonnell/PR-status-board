@@ -1,8 +1,6 @@
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
-// import PullRequestCard, { PullRequest } from "../components/PullRequestCard";
-// import { Octokit } from "octokit";
 import Filter from "../components/filter";
 
 const cn = (...classes: string[]) => classes.filter(Boolean).join(" ");
@@ -26,33 +24,43 @@ type PullRequest = {
   rawClosedAt: string; // Crucial for accurate date sorting in main file
 };
 
-// Placeholder for the external Filter component (changed to arrow function)
-// const Filter = () => {
-//     return (
-//         // Render a simple div placeholder for the filter component
-//         <div className="bg-[#161B22] border-b border-[#30363D] py-3 px-10">
-//             {/* The actual Filter component content is external */}
-//         </div>
-//     );
-// }
 const PullRequestCard = ({ pr }: { pr: PullRequest }) => {
-  const ageInHours = parseInt(pr.age.replace("h old", ""), 10);
+  const hoursSinceClosed =
+    (Date.now() - new Date(pr.rawClosedAt).getTime()) / (1000 * 60 * 60);
 
-  // Determine the left border color based on age (time PR was open before closure)
-  const ageClass =
-    ageInHours > 72 // More than 3 days (72h) is critical
-      ? "border-l-red-400"
-      : ageInHours >= 24
-      ? "border-l-yellow-400" // More than 1 day (24h) is a concern
-      : "border-l-green-400"; // Less than a day is good
+  const days = Math.floor(hoursSinceClosed / 24);
+  const hours = Math.floor(hoursSinceClosed % 24);
+
+  const timeDisplay =
+    days > 0
+      ? `${days} day${days > 1 ? "s" : ""}${
+          hours > 0 ? ` ${hours} hour${hours > 1 ? "s" : ""}` : ""
+        } ago`
+      : `${Math.floor(hoursSinceClosed)}h ago`;
+
+
+  const borderClass =
+    pr.status === "Merged"
+      ? "border-l-purple-600"
+      : pr.status === "Closed"
+      ? "border-l-red-600"
+      : "border-l-gray-600";
+
+  const timeColor =
+    hoursSinceClosed < 24
+      ? "text-green-400"
+      : hoursSinceClosed < 72
+      ? "text-yellow-400"
+      : "text-orange-600";
+
 
   return (
     <div
       className={cn(
         // "bg-[#161b22] mx-auto sm:mx-16 border border-[#30363D] rounded-lg p-4 hover:bg-[#30363D]/80 transition",
         // "w-full max-w-4xl h-auto",
-        "bg-[#161b22] mx-auto sm:mx-16 border border-[#30363D] rounded-lg p-4 hover:bg-[#30363D]/80 transition  h-[180px] sm:w-auto sm:h-auto",
-        `${ageClass}`
+        "bg-[#161b22] mx-auto sm:mx-16 border border-[#30363D] rounded-lg p-4 hover:bg-[#30363D]/80 transition sm:w-auto sm:h-auto",
+        `${borderClass}`
       )}
     >
       <a
@@ -80,18 +88,11 @@ const PullRequestCard = ({ pr }: { pr: PullRequest }) => {
 
         <p className="text-sm text-gray-400">
           by <span className="font-medium text-white">{pr.author}</span> •
-          created {pr.createdAt} • **closed {pr.closedOn}** • open time:{" "}
-          <span
-            className={cn(
-              ageInHours > 72
-                ? "text-red-400"
-                : ageInHours >= 24
-                ? "text-yellow-400"
-                : "text-green-400"
-            )}
-          >
-            {pr.age}
-          </span>
+          created {pr.createdAt} • {pr.status.toLowerCase()} {pr.closedOn} •{" "}  ** {" "}
+          <span className={timeColor}>
+            {pr.status.toLowerCase()} {timeDisplay}
+          </span>{" "}
+          **
         </p>
       </a>
 
@@ -282,20 +283,24 @@ export default function ClosedRequests() {
         onClearCache={clearCache}
       />
 
-      <div className="px-4 md:px-10 mt-10 max-w-6xl mx-auto">
+      <div className="px-10 mt-10">
         <div className="flex flex-col lg:flex-row items-start lg:items-center mb-8 space-y-4 lg:space-y-0 justify-between max-w-[1216px] m-auto">
-          <h1 className="text-3xl font-bold mb-6 mt-5">Closed Pull Requests</h1>
+          <h1 className="text-3xl font-bold mt-5">Closed Pull Requests</h1>
         </div>
 
-        <div className="text-gray-400 text-sm mb-6 space-y-1">
+        <div className="flex flex-col lg:flex-row items-start lg:items-center space-y-4 lg:space-y-0 justify-between max-w-[1216px] m-auto">
+
+        <div className="text-gray-400 text-sm  mb-6 space-y-1">
           {lastFetched && <p>Last fetched (Get Live Data): {lastFetched}</p>}
           {lastUsedCache && (
             <p>Last used cache (Use Cached Data): {lastUsedCache}</p>
           )}
           {lastCleared && <p>Cache cleared on: {lastCleared}</p>}
         </div>
+</div>
+        <div className="flex flex-col lg:flex-row items-start lg:items-center space-y-4 lg:space-y-0 justify-between max-w-[1216px] m-auto">
 
-        <div className="flex flex-row flex-wrap gap-3 mb-8">
+        <div className="flex flex-row flex-wrap gap-3 mb-8 ">
           <input
             type="text"
             placeholder="Search Closed PRs..."
@@ -337,6 +342,8 @@ export default function ClosedRequests() {
             <option className="bg-[#161b22]">Title</option>
           </select>
         </div>
+</div>
+
 
         {loading ? (
           <p>Loading...</p>
