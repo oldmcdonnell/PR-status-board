@@ -9,9 +9,7 @@ export default function Profile() {
     return (
       <button
         onClick={() => signIn("github")}
-        className="flex items-start flex-wrap max-w-[80px] max-h-[40px] sm:h-full sm:w-auto 
-        text-sm lg:h-auto md:ml-auto md:mr-10 cursor-pointer font-bold bg-blue-500 hover:bg-blue-600 
-        text-white py-2 px-4 rounded-lg whitespace-nowrap ml-4"
+        className="flex items-center justify-center text-xs sm:text-sm font-semibold bg-blue-500 hover:bg-blue-600 text-white py-1.5 px-3 rounded-md whitespace-nowrap"
       >
         Sign in
       </button>
@@ -19,22 +17,22 @@ export default function Profile() {
   }
 
   return (
-    <div className="sm:ml-auto ml-4 flex flex-wrap items-center space-x-4">
-      <img
-        src={session.user?.image || "/default-avatar.png"}
-        alt={session.user?.name || "GitHub Avatar"}
-        className="w-8 h-8 rounded-full"
-      />
-      <span className="text-white sm:font-medium font-normal text-sm">{session.user?.name}</span>
+    <div className="flex flex-col items-end space-y-1">
+      <div className="flex items-center space-x-2">
+        <img
+          src={session.user?.image || "/default-avatar.png"}
+          alt={session.user?.name || "GitHub Avatar"}
+          className="w-6 h-6 sm:w-7 sm:h-7 rounded-full"
+        />
+        <span className="text-white text-xs sm:text-sm font-medium truncate max-w-[100px] sm:max-w-[140px]">
+          {session.user?.name}
+        </span>
+      </div>
+
       <button
         onClick={() => signOut()}
-        // className="cursor-pointer font-bold bg-red-500 hover:bg-red-600 text-white py-1 px-3 rounded-lg text-xs"
-className="flex items-start flex-wrap max-w-[80px] max-h-[40px] sm:h-full sm:w-auto 
-        text-sm lg:h-auto md:ml-auto md:mr-10 cursor-pointer font-bold bg-red-500 hover:bg-red-600 
-        text-white py-2 px-4 rounded-lg whitespace-nowrap ml-4"
->
-
-
+        className="text-xs sm:text-sm font-semibold bg-red-500 hover:bg-red-600 text-white py-1 px-3 rounded-md self-end"
+      >
         Sign out
       </button>
     </div>
