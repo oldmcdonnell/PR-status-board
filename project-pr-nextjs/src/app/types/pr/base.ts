@@ -12,5 +12,3 @@ export type BasePR = {
 
   age?: string;            // humanized like "1d 2h" (computed in UI)
 };
-'
-'
