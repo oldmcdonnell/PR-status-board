@@ -6,7 +6,7 @@ export interface PullRequestClosed {
   updatedAt: string;
   closedOn: string;
   age: string; //need to calculate age
-  reviewers: Reviewer[];
+//   reviewers: Reviewer[];
   status: "Closed" | "Merged";
   url: string;
     rawClosedAt: string; 
